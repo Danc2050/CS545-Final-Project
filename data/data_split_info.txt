@@ -1,0 +1,4 @@
+Some data about our data (I'm rounding so may not =100%):
+
+Bad vs. Good Credit Split: 22%, 77%
+If we split data in half ((7500 Train_Bad, 7500 Train_Good), (7500 Test_bad, 7500 Test_good)): (27%, 72%), (22%, 77%).
