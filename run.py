@@ -12,17 +12,17 @@ import subprocess
 
 assert sys.version_info >= (3, 6) #Pyhon 3 required
 
+quiet = False
 
 def main(argv):
-  installModules()
-
+  global quiet
   versions = []
   def usage():
-    print(f'Usage: {argv[0]} [-v <bayes | slp | mlp>]')
+    print(f'Usage: {argv[0]} [--quiet] [-v <bayes | slp | mlp>]')
     exit(2)
 
   try: 
-    opts, args = getopt.getopt(argv[1:], ":v:")
+    opts, args = getopt.getopt(argv[1:], ":v:q", ['quiet'])
   except getopt.GetoptError: 
     usage()
 
@@ -34,35 +34,35 @@ def main(argv):
       if arg not in ('bayes', 'slp', 'mlp'):
         usage()
       versions.append(arg)
+    if opt in ('-q', '--quiet'):
+      quiet = True
 
   versions = list(set(versions)) #Make distinct
   if versions == []: versions = ['bayes', 'slp', 'mlp'] #Run them all
 
-  if 'bayes' in versions:
-    bayes()
-  if 'slp' in versions:
-    slp()
-  if 'mlp' in versions:
-    mlp()
+  installModules()
+  if 'bayes' in versions: bayes()
+  if 'slp' in versions: slp()
+  if 'mlp' in versions: mlp()
 
 
 def bayes():
-  print('\n\nExecuting bayes...')
+  output('\n\nExecuting bayes...')
   import bayes
   bayes.main()
 
 def slp():
-  print('\n\nExecuting slp...')
+  output('\n\nExecuting slp...')
   print('TODO')
 
 def mlp():
-  print('\n\nExecuting mlp...')
+  output('\n\nExecuting mlp...')
   import neural
   neural.main()
 
 
 def installModules():
-  print('Checking for required modules... ', end='', flush=True)
+  output('Checking for required modules... ', end='')
 
   try:
     import sklearn
@@ -70,7 +70,11 @@ def installModules():
     print('sklearn not found. Installing...')
     p = subprocess.run('pip3 install sklearn', shell=True)
     
-  print('Done')
+  output('Done')
+
+
+def output(s, end='\n'):
+  if not quiet: print(s, end=end, flush=True)
 
 
 if __name__=="__main__":
