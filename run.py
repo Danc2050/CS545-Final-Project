@@ -38,34 +38,25 @@ def main(argv):
       if arg not in ('bayes', 'slp', 'mlp'):
         usage()
       versions.append(arg)
-    if opt in ('-q', '--quiet'):
-      quiet = True
-    if opt in ('-s', '--serial'):
-      serial = True
+    if opt in ('-q', '--quiet'):  quiet = True
+    if opt in ('-s', '--serial'): serial = True
 
   versions = list(set(versions)) #Make distinct
   if versions == []: versions = ['bayes', 'slp', 'mlp'] #Run them all
 
   installModules()
 
-  processes = []
-  if 'bayes' in versions:
-    processes.append(mp.Process(target=bayes))
-  if 'slp' in versions: 
-    processes.append(mp.Process(target=slp))
-  if 'mlp' in versions: 
-    processes.append(mp.Process(target=mlp))
-
-
   if serial:
-    for p in processes:
-      p.start()
-      p.join()
+    if 'bayes' in versions: bayes()
+    if 'slp' in versions:   slp()
+    if 'mlp' in versions:   mlp()
   else:
-    for p in processes:
-      p.start()
-    for p in processes:
-      p.join()
+    processes = []
+    if 'bayes' in versions: processes.append(mp.Process(target=bayes))
+    if 'slp' in versions:   processes.append(mp.Process(target=slp))
+    if 'mlp' in versions:   processes.append(mp.Process(target=mlp))
+    for p in processes: p.start()
+    for p in processes: p.join()
 
 
 def bayes():
