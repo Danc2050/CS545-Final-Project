@@ -1,1 +1,6 @@
 __pycache__
+
+#Individual output files
+_bayes.txt
+_slp.txt
+_mlp.txt
