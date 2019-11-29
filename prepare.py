@@ -40,8 +40,6 @@ def alter_labels(data, idx_label):
         data[[p1, p2]] = data[[p2, p1]] # swap them
     p1 += 1
   labels = data[:, [idx_label]]
-  # move dirty distrubution top, so training set will use them
-  np.flip(data, axis=0)
 
 def split_indexes(n_train, n_validate, n_test, row_total):
   ''' calculate where to split
@@ -50,15 +48,11 @@ def split_indexes(n_train, n_validate, n_test, row_total):
   i1 = (n_train + n_validate) / (n_train + n_validate + n_test) * row_total
   return (int(i0), int(i1))
 
-def prepare_data():
+def prepare_data(data, idx_label, train_n, valid_n, test_n):
   ''' preprocess data for training
       in: np array with all raw dataset
       out: inputs, labels as np arrays
   '''
-  # read in data
-  data = np.genfromtxt('data\data.csv', delimiter=',')
-
-  idx_label = np.shape(data)[1] - 1 # last column
   alter_labels(data, idx_label) # rearrange data for later splitting
 
   labels = data[:, [idx_label]]
@@ -66,7 +60,7 @@ def prepare_data():
   examples = normalize_data(raw_examples) # normalize
 
   # split
-  (i0, i1) = split_indexes(3, 1, 1, np.shape(examples)[0])
+  (i0, i1) = split_indexes(train_n, valid_n, test_n, np.shape(examples)[0])
   train_set = (examples[:i0], labels[0:i0])
   valid_set = (examples[i0:i1], labels[i0:i1])
   test_set = (examples[i1:], labels[i1:])
@@ -74,4 +68,6 @@ def prepare_data():
   return (train_set, valid_set, test_set)
   
 if __name__=="__main__":
-  prepare_data()
+  data = np.genfromtxt('data\data.csv', delimiter=',')
+  idx_label = np.shape(data)[1] - 1 # last column
+  (train_set, valid_set, test_set) = prepare_data(data, idx_label, 3, 1, 1)

@@ -33,6 +33,7 @@ def train_test(train_set, valid_set, test_set, param):
     model = mlp.mlp(np.shape(train_data[0])[1], hidden_nodes, cnt_out) # init model
     (a01, confu01) = model.test(train_data[0], train_data[1], cnt_out) # init result train
     (a02, confu02) = model.test(train_data[0], train_data[1], cnt_out) # init result test
+    print(" initial accuracy: (train {0:.2f}, test {1:.2f})".format(a01, a02))
     for i in range(max_epoch):
         print(" --- --- epoch {0}: (mom-{1}, nH-{2}, tSize-{3})".format(i, momentum, hidden_nodes, train_size))
         train_data = shuffle_sets(train_data, cnt_out) # shuffle

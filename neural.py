@@ -9,7 +9,10 @@ from prepare import prepare_data
 from MLP import mlp_test as mt
 
 def main():
-  (train_set, valid_set, test_set) = prepare_data()
+  # read in data
+  data = np.genfromtxt('data\data.csv', delimiter=',')
+  idx_label = np.shape(data)[1] - 1 # last column
+  (train_set, valid_set, test_set) = prepare_data(data, idx_label, 3, 1, 1)
   mt.sweep_test(train_set, valid_set, test_set)
 
 if __name__=="__main__":
