@@ -36,13 +36,13 @@ class mlp:
             (middles, outputs) = self.forward(ins_batch, batch)
 
             # backward phase
-            deltaO = outputs*(1.0-outputs)*(lbs_batch-outputs)
-            deltaH = middles*(1.0-middles)*(np.dot(deltaO, np.transpose(self.weights2)))
+            delta_o = outputs*(1.0-outputs)*(lbs_batch-outputs)
+            delta_h = middles*(1.0-middles)*(np.dot(delta_o, np.transpose(self.weights2)))
 
             # update weights
-            last_w2 = eta*(np.dot(np.transpose(middles), deltaO)) + mom*last_w2
+            last_w2 = eta*(np.dot(np.transpose(middles), delta_o)) + mom*last_w2
             self.weights2 += last_w2
-            last_w1 = eta*(np.dot(np.transpose(ins_batch), deltaH[:,:-1])) + mom*last_w1
+            last_w1 = eta*(np.dot(np.transpose(ins_batch), delta_h[:,:-1])) + mom*last_w1
             self.weights1 += last_w1
     
     def test(self, inputs: np.array, labels: np.array, out_cnt: int):
@@ -55,9 +55,13 @@ class mlp:
 
         outputs = np.argmax(outputs, axis=1)
         labels = np.argmax(labels, axis=1)
-        
-        for i in range(out_cnt):
-            for j in range(out_cnt):
-                confusion[i,j] = np.sum(np.where(outputs==i,1,0)*np.where(labels==j,1,0))
+
+        # calculate accuracy and confusion matrix
+        n_pass = 0
+        for i in range(count):
+            if outputs[i] == labels[i]:
+                n_pass += 1
+            confusion[labels[i], outputs[i]] += 1
+        accuracy = n_pass / count
             
-        return confusion
+        return (accuracy, confusion)

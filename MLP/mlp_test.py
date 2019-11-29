@@ -22,24 +22,27 @@ def expand_labels(data_set, cnt_out):
     return (data_set[0], exp_labels)
 
 def train_test(train_set, valid_set, test_set, param):
-    (eta, momentum, hidden_nodes, train_size, max_epoch, batch) = param
+    (eta, momentum, hidden_nodes, train_size, max_epoch, batch_size) = param
     train_data = get_train_data(train_set, train_size)
 
     cnt_out = 2 # output classes
     train_data = expand_labels(train_data, cnt_out)
+    #valid_set = expand_labels(valid_set, cnt_out)
+    test_set = expand_labels(test_set, cnt_out)
 
     model = mlp.mlp(np.shape(train_data[0])[1], hidden_nodes, cnt_out) # init model
+    (a01, confu01) = model.test(train_data[0], train_data[1], cnt_out) # init result train
+    (a02, confu02) = model.test(train_data[0], train_data[1], cnt_out) # init result test
     for i in range(max_epoch):
         print(" --- --- epoch {0}: (mom-{1}, nH-{2}, tSize-{3})".format(i, momentum, hidden_nodes, train_size))
         train_data = shuffle_sets(train_data, cnt_out) # shuffle
-        model.train(train_data[0], train_data[1], eta, momentum, batch) # train
-        confu1 = model.test(train_data[0], train_data[1], cnt_out) # run train dataset
-        confu2 = model.test(test_set[0], test_set[1], cnt_out) # run test set
-        print(" accuracy: (train {0:.2f}, test {1:.2f})".format(
-            np.trace(confu1) / np.sum(confu1), np.trace(confu2) / np.sum(confu2)))
+        model.train(train_data[0], train_data[1], eta, momentum, batch_size) # train
+        (a1, confu1) = model.test(train_data[0], train_data[1], cnt_out) # run train dataset
+        (a2, confu2) = model.test(test_set[0], test_set[1], cnt_out) # run test set
+        print(" accuracy: (train {0:.2f}, test {1:.2f})".format(a1, a2))
 
 def sweep_test(train_set, valid_set, test_set):
-    # parameters array: eta, momentum, hidden_nodes, train_size, max_epoch
+    # parameters array: eta, momentum, hidden_nodes, train_size, max_epoch, batch_size
     params_arr = [
         # (0.1,   0.9,   1,    1.0,   50,   100), # hidden nodes 1, 5, 10
         # (0.1,   0.9,   5,    1.0,   50,   100),
