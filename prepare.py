@@ -54,9 +54,11 @@ def prepare_data(data, idx_label, train_n, valid_n, test_n):
       in: np array with all raw dataset
       out: inputs, labels as np arrays
   '''
-  alter_labels(data, idx_label) # rearrange data for later splitting
+  #alter_labels(data, idx_label) # rearrange data for later splitting
 
   labels = data[:, [idx_label]]
+  labels = labels - np.amin(labels)
+  n_class = int(np.amax(labels) + 1)
   raw_examples = np.delete(data, idx_label, axis=1)
   examples = normalize_data(raw_examples) # normalize
 
@@ -66,9 +68,9 @@ def prepare_data(data, idx_label, train_n, valid_n, test_n):
   valid_set = (examples[i0:i1], labels[i0:i1])
   test_set = (examples[i1:], labels[i1:])
 
-  return (train_set, valid_set, test_set)
+  return (train_set, valid_set, test_set, n_class)
   
 if __name__=="__main__":
   data = np.genfromtxt('data\data.csv', delimiter=',')
   idx_label = np.shape(data)[1] - 1 # last column
-  (train_set, valid_set, test_set) = prepare_data(data, idx_label, 3, 1, 1)
+  (train_set, valid_set, test_set, n_class) = prepare_data(data, idx_label, 3, 1, 1)
