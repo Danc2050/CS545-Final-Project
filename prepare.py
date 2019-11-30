@@ -56,10 +56,11 @@ def prepare_data(data, idx_label, train_n, valid_n, test_n):
   '''
   #alter_labels(data, idx_label) # rearrange data for later splitting
 
-  labels = data[:, [idx_label]]
-  labels = labels - np.amin(labels)
-  n_class = int(np.amax(labels) + 1)
-  raw_examples = np.delete(data, idx_label, axis=1)
+  labels = data[:, [idx_label]] # grab labels
+  labels = labels - np.amin(labels) # remove offset, so start from '0'
+  n_class = int(np.amax(labels) + 1) # assume continous class numbers
+
+  raw_examples = np.delete(data, idx_label, axis=1) # grab examples
   examples = normalize_data(raw_examples) # normalize
 
   # split

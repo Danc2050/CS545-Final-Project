@@ -25,10 +25,11 @@ class mlp:
 
         inputs = np.concatenate((inputs, np.ones((count,1))), axis=1) # append bias value '1's
 
-        last_w1 = np.zeros(np.shape(self.weights1))
-        last_w2 = np.zeros(np.shape(self.weights2))
+        last_w1 = np.zeros(np.shape(self.weights1)) # delta weights1
+        last_w2 = np.zeros(np.shape(self.weights2)) # delta weights2
         
         for i in range(0, count, batch):
+            # grab data based on batch size
             ins_batch = inputs[i:i+batch]
             lbs_batch = labels[i:i+batch]
 
