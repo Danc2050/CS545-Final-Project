@@ -21,11 +21,11 @@ def expand_labels(data_set, cnt_out):
         exp_labels[i][int(data_set[1][i])] = 0.9 # true = 0.9
     return (data_set[0], exp_labels)
 
-def train_test(train_set, valid_set, test_set, param):
+def train_test(train_set, valid_set, test_set, param, cnt_class):
     (eta, momentum, hidden_nodes, train_size, max_epoch, batch_size) = param
     train_data = get_train_data(train_set, train_size)
 
-    cnt_out = 2 # output classes
+    cnt_out = cnt_class # output classes
     train_data = expand_labels(train_data, cnt_out)
     #valid_set = expand_labels(valid_set, cnt_out)
     test_set = expand_labels(test_set, cnt_out)
@@ -42,7 +42,7 @@ def train_test(train_set, valid_set, test_set, param):
         (a2, confu2) = model.test(test_set[0], test_set[1], cnt_out) # run test set
         print(" accuracy: (train {0:.2f}, test {1:.2f})".format(a1, a2))
 
-def sweep_test(train_set, valid_set, test_set):
+def sweep_test(train_set, valid_set, test_set, cnt_class):
     # parameters array: eta, momentum, hidden_nodes, train_size, max_epoch, batch_size
     params_arr = [
         # (0.1,   0.9,   1,    1.0,   50,   100), # hidden nodes 1, 5, 10
@@ -56,4 +56,4 @@ def sweep_test(train_set, valid_set, test_set):
     ]
 
     for param in params_arr:
-        train_test(train_set, valid_set, test_set, param)
+        train_test(train_set, valid_set, test_set, param, cnt_class)

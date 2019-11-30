@@ -10,10 +10,11 @@ from MLP import mlp_test as mt
 
 def main():
   # read in data
-  data = np.genfromtxt('data\data.csv', delimiter=',')
-  idx_label = np.shape(data)[1] - 1 # last column
+  data = np.genfromtxt('data\mnist_test.csv', delimiter=',')
+  #idx_label = np.shape(data)[1] - 1 # last column
+  idx_label = 0
   (train_set, valid_set, test_set) = prepare_data(data, idx_label, 3, 1, 1)
-  mt.sweep_test(train_set, valid_set, test_set)
+  mt.sweep_test(train_set, valid_set, test_set, 10)
 
 if __name__=="__main__":
   main()

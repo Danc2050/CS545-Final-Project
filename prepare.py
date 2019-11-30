@@ -13,6 +13,7 @@ def normalize_data(data):
   '''
   means = np.mean(data, axis=0) # mean, col-wise
   stds = np.std(data, axis=0) # std
+  stds[stds == 0.0] = 0.00001 # avoid dividing by '0'
   dim = np.shape(means)[0]
   ret = data - np.transpose(means).reshape(1, dim)
   ret = ret / np.transpose(stds).reshape(1, dim)
