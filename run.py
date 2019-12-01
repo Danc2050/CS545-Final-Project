@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!python
 
 '''
   Authors: Dalton, Ebele, Dawei, Daniel Lee, Daniel Connelly
@@ -105,7 +105,7 @@ def installModules():
     import sklearn
   except ImportError as error:
     print('sklearn not found. Installing...')
-    p = subprocess.run('pip3 install sklearn', shell=True)
+    p = subprocess.run('pip install sklearn', shell=True)
     
   output('Done')
 
