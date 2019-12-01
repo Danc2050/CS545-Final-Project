@@ -9,6 +9,7 @@ import sys
 import getopt
 import subprocess
 import multiprocessing as mp
+import re
 
 
 assert sys.version_info >= (3, 6) #Pyhon 3 required
@@ -81,6 +82,17 @@ def mlp():
     sys.stdout = sys.stderr = outfile
     import neural
     neural.main()
+    sys.stdout = sys.__stdout__
+    sys.stdrr = sys.__stderr__
+  with open(outfilename, 'r') as infile:
+    accuracy_train = []
+    accuracy_test = []
+    for line in infile:
+      match = re.search('accuracy: \(train (.*), test (.*)\)', line)
+      if match:
+        accuracy_train.append(match.group(1))
+        accuracy_test.append(match.group(2))
+    #TODO: plot with pylab
 
 
 '''
