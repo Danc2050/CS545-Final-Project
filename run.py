@@ -60,7 +60,7 @@ def main(argv):
 
 
 def bayes():
-  outfilename = '_bayes.txt'
+  outfilename = 'output/bayes.txt'
   output(f'Executing bayes (output in {outfilename})')
   with open(outfilename, 'w+') as outfile:
     sys.stdout = sys.stderr = outfile
@@ -68,14 +68,14 @@ def bayes():
     bayes.main()
     
 def slp():
-  outfilename = '_slp.txt'
+  outfilename = 'output/slp.txt'
   output(f'Executing slp (output in {outfilename})')
   with open(outfilename, 'w+') as outfile:
     sys.stdout = sys.stderr = outfile
     print('TODO')
 
 def mlp():
-  outfilename = '_mlp.txt'
+  outfilename = 'output/mlp.txt'
   output(f'Executing mlp (output in {outfilename})')
   with open(outfilename, 'w+') as outfile:
     sys.stdout = sys.stderr = outfile
