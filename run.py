@@ -72,21 +72,19 @@ def main(argv):
 def bayes():
   outfilename = path.join('output', 'bayes.txt')
   print(f'Executing bayes (output in {outfilename})')
-  with open(outfilename, 'w+') as outfile:
-    redirectOutputToFile(outfile)
+  def runTraining():
     import bayes
     bayes.main()
-    restoreStandardOutput()
+  redirectFunctionOutputToFile(runTraining, outfilename)
     
 def slp():
   outfilename = path.join('output', 'slp.txt')
   pngfilename = path.join('output', 'slp.png')
   print(f'Executing slp (output in {outfilename})')
-  with open(outfilename, 'w+') as outfile:
-    redirectOutputToFile(outfile)
+  def runTraining():
     from SLP import slp
     slp.train()
-    restoreStandardOutput()
+  redirectFunctionOutputToFile(runTraining, outfilename)
   with open(outfilename, 'r') as infile:
     accuracy_train = []
     accuracy_test = []
@@ -109,11 +107,10 @@ def mlp():
   outfilename = path.join('output', 'mlp.txt')
   pngfilename = path.join('output', 'mlp.png')
   print(f'Executing mlp (output in {outfilename})')
-  with open(outfilename, 'w+') as outfile:
-    redirectOutputToFile(outfile)
+  def runTraining():
     import neural
     neural.main()
-    restoreStandardOutput()
+  redirectFunctionOutputToFile(runTraining, outfilename)
   with open(outfilename, 'r') as infile:
     accuracy_train = []
     accuracy_test = []
@@ -146,18 +143,19 @@ def plot(accuracy_train, accuracy_test, pngfilename):
   plt.clf()
   print(f'Plot in {pngfilename}')
 
-'''
-  Redirects standard output and errors to the file supplied
-'''
-def redirectOutputToFile(f):
-  sys.stdout = sys.stderr = f
 
 '''
-  Restores output to the standard (screen) output in case it was redirected.
+  Executes a function, redirecting its output to the file specified.
+  try/finally makes sure output is restored and exceptions raised to stderr
 '''
-def restoreStandardOutput():
-  sys.stdout = sys.__stdout__
-  sys.stderr = sys.__stderr__
+def redirectFunctionOutputToFile(fun, filename):
+  with open(filename, 'w+') as outfile:
+    try:
+      sys.stdout = sys.stderr = outfile
+      fun()
+    finally:
+      sys.stdout = sys.__stdout__
+      sys.stderr = sys.__stderr__
 
 
 if __name__=="__main__":
