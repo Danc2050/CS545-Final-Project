@@ -10,6 +10,18 @@ import getopt
 import subprocess
 import multiprocessing as mp
 import re
+import os
+import numpy as np
+
+try:
+    import sklearn
+except ImportError as error:
+  p = subprocess.run('pip install sklearn', shell=True)
+try:
+  import matplotlib.pyplot as plt
+  import matplotlib.cm as cm
+except ImportError as error:
+  p = subprocess.run('pip install matplotlib', shell=True)
 
 
 assert sys.version_info >= (3, 6) #Pyhon 3 required
@@ -45,8 +57,6 @@ def main(argv):
   versions = list(set(versions)) #Make distinct
   if versions == []: versions = ['bayes', 'slp', 'mlp'] #Run them all
 
-  installModules()
-
   if serial:
     if 'bayes' in versions: bayes()
     if 'slp' in versions:   slp()
@@ -61,29 +71,32 @@ def main(argv):
 
 
 def bayes():
-  outfilename = 'output/bayes.txt'
+  outfilename = os.path.join('output', 'bayes.txt')
   output(f'Executing bayes (output in {outfilename})')
   with open(outfilename, 'w+') as outfile:
     sys.stdout = sys.stderr = outfile
     import bayes
     bayes.main()
+    sys.stdout = sys.__stdout__
+    sys.stderr = sys.__stderr__
     
 def slp():
-  outfilename = 'output/slp.txt'
+  outfilename = os.path.join('output', 'slp.txt')
   output(f'Executing slp (output in {outfilename})')
   with open(outfilename, 'w+') as outfile:
     sys.stdout = sys.stderr = outfile
     print('TODO')
 
 def mlp():
-  outfilename = 'output/mlp.txt'
+  outfilename = os.path.join('output', 'mlp.txt')
+  pngfilename = os.path.join('output', 'mlp.png')
   output(f'Executing mlp (output in {outfilename})')
   with open(outfilename, 'w+') as outfile:
     sys.stdout = sys.stderr = outfile
     import neural
     neural.main()
     sys.stdout = sys.__stdout__
-    sys.stdrr = sys.__stderr__
+    sys.stderr = sys.__stderr__
   with open(outfilename, 'r') as infile:
     accuracy_train = []
     accuracy_test = []
@@ -92,22 +105,22 @@ def mlp():
       if match:
         accuracy_train.append(match.group(1))
         accuracy_test.append(match.group(2))
-    #TODO: plot with pylab
+    accuracy_train = np.array(accuracy_train, dtype=np.float)
+    accuracy_test = np.array(accuracy_test, dtype=np.float)
 
-
-'''
-  Makes sure we have the necessary modules installed.
-'''
-def installModules():
-  output('Checking for required modules... ', end='')
-
-  try:
-    import sklearn
-  except ImportError as error:
-    print('sklearn not found. Installing...')
-    p = subprocess.run('pip install sklearn', shell=True)
+    if accuracy_train.shape[0] == 0 or accuracy_test.shape[0] == 0:
+      print("ERROR: Could not find training and test accuracy")
+      return
     
-  output('Done')
+    #Plot the accuracies with pyplot
+    colors = iter(cm.rainbow(np.linspace(0, 1, 2))) #2 colors
+    plt.plot(range(accuracy_train.shape[0]), accuracy_train, color=next(colors), label="train={:.2%}".format(accuracy_train[-1]))
+    plt.plot(range(accuracy_test.shape[0]), accuracy_test, color=next(colors), label="train={:.2%}".format(accuracy_test[-1]))
+    plt.legend(loc='lower right')
+    plt.ylim(np.amin([accuracy_test, accuracy_train])-0.1, np.amax([accuracy_test, accuracy_train])+0.1)
+    plt.savefig(pngfilename)
+    plt.clf()
+
 
 
 '''

@@ -1,7 +1,0 @@
-Prior of the bad credit score: 0.3051695386325737. Prior of the good: 0.6948304613674263.
-[[11604    54]
- [ 3242   100]]
-Tp, fp, fn, tn:  11604 54 3242 100
-Accuracy: 78.02666666666667
-Precision: 54.0
-Recall: 0.7816246800484979
