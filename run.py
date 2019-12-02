@@ -56,11 +56,11 @@ def main(argv):
   versions = list(set(versions)) #Make distinct
   if versions == []: versions = ['bayes', 'slp', 'mlp'] #Run them all
 
-  if serial:
+  if serial: #Just simply run each one
     if 'bayes' in versions: bayes()
     if 'slp' in versions:   slp()
     if 'mlp' in versions:   mlp()
-  else:
+  else: #Run in parallel processes
     processes = []
     if 'bayes' in versions: processes.append(mp.Process(target=bayes))
     if 'slp' in versions:   processes.append(mp.Process(target=slp))
@@ -72,19 +72,19 @@ def main(argv):
 def bayes():
   outfilename = path.join('output', 'bayes.txt')
   print(f'Executing bayes (output in {outfilename})')
-  def runTraining():
+  def runModel():
     import bayes
     bayes.main()
-  redirectFunctionOutputToFile(runTraining, outfilename)
+  redirectFunctionOutputToFile(runModel, outfilename)
     
 def slp():
   outfilename = path.join('output', 'slp.txt')
   pngfilename = path.join('output', 'slp.png')
   print(f'Executing slp (output in {outfilename})')
-  def runTraining():
+  def runModel():
     from SLP import slp
     slp.train()
-  redirectFunctionOutputToFile(runTraining, outfilename)
+  redirectFunctionOutputToFile(runModel, outfilename)
   with open(outfilename, 'r') as infile:
     accuracy_train = []
     accuracy_test = []
@@ -107,10 +107,10 @@ def mlp():
   outfilename = path.join('output', 'mlp.txt')
   pngfilename = path.join('output', 'mlp.png')
   print(f'Executing mlp (output in {outfilename})')
-  def runTraining():
+  def runModel():
     import neural
     neural.main()
-  redirectFunctionOutputToFile(runTraining, outfilename)
+  redirectFunctionOutputToFile(runModel, outfilename)
   with open(outfilename, 'r') as infile:
     accuracy_train = []
     accuracy_test = []
@@ -156,6 +156,7 @@ def redirectFunctionOutputToFile(fun, filename):
     finally:
       sys.stdout = sys.__stdout__
       sys.stderr = sys.__stderr__
+    #Uncaught exceptions automatically raised here
 
 
 if __name__=="__main__":
