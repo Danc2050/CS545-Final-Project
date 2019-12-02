@@ -4,24 +4,26 @@
   Authors: Dalton, Ebele, Dawei, Daniel Lee, Daniel Connelly
   Class: CS545 - Fall 2019 | Professor Anthony Rhodes
 '''
-
 import sys
 import getopt
 import subprocess
 import multiprocessing as mp
 import re
-import os
+from os import path
 import numpy as np
 
 try:
     import sklearn
 except ImportError as error:
   p = subprocess.run('pip install sklearn', shell=True)
+  import sklearn
 try:
   import matplotlib.pyplot as plt
   import matplotlib.cm as cm
 except ImportError as error:
   p = subprocess.run('pip install matplotlib', shell=True)
+  import matplotlib.pyplot as plt
+  import matplotlib.cm as cm
 
 
 assert sys.version_info >= (3, 6) #Pyhon 3 required
@@ -71,7 +73,7 @@ def main(argv):
 
 
 def bayes():
-  outfilename = os.path.join('output', 'bayes.txt')
+  outfilename = path.join('output', 'bayes.txt')
   output(f'Executing bayes (output in {outfilename})')
   with open(outfilename, 'w+') as outfile:
     sys.stdout = sys.stderr = outfile
@@ -81,15 +83,36 @@ def bayes():
     sys.stderr = sys.__stderr__
     
 def slp():
-  outfilename = os.path.join('output', 'slp.txt')
+  outfilename = path.join('output', 'slp.txt')
+  pngfilename = path.join('output', 'slp.png')
   output(f'Executing slp (output in {outfilename})')
   with open(outfilename, 'w+') as outfile:
     sys.stdout = sys.stderr = outfile
-    print('TODO')
+    from SLP import slp
+    slp.train()
+    sys.stdout = sys.__stdout__
+    sys.stderr = sys.__stderr__
+  with open(outfilename, 'r') as infile:
+    accuracy_train = []
+    accuracy_test = []
+    for line in infile:
+      match = re.search('Training accuracy: (.*)', line)
+      if match: 
+        accuracy_train = np.array(match.group(1).split(','), dtype=np.float)
+        continue
+      match = re.search('Test accuracy: (.*)', line)
+      if match: 
+        accuracy_test = np.array(match.group(1).split(','), dtype=np.float)
+
+    if accuracy_train.shape[0] == 0 or accuracy_test.shape[0] == 0:
+      print("ERROR: Could not find training and test accuracy")
+      return
+    plot(accuracy_train, accuracy_test, pngfilename)
+
 
 def mlp():
-  outfilename = os.path.join('output', 'mlp.txt')
-  pngfilename = os.path.join('output', 'mlp.png')
+  outfilename = path.join('output', 'mlp.txt')
+  pngfilename = path.join('output', 'mlp.png')
   output(f'Executing mlp (output in {outfilename})')
   with open(outfilename, 'w+') as outfile:
     sys.stdout = sys.stderr = outfile
@@ -111,16 +134,19 @@ def mlp():
     if accuracy_train.shape[0] == 0 or accuracy_test.shape[0] == 0:
       print("ERROR: Could not find training and test accuracy")
       return
-    
-    #Plot the accuracies with pyplot
-    colors = iter(cm.rainbow(np.linspace(0, 1, 2))) #2 colors
-    plt.plot(range(accuracy_train.shape[0]), accuracy_train, color=next(colors), label="train={:.2%}".format(accuracy_train[-1]))
-    plt.plot(range(accuracy_test.shape[0]), accuracy_test, color=next(colors), label="train={:.2%}".format(accuracy_test[-1]))
-    plt.legend(loc='lower right')
-    plt.ylim(np.amin([accuracy_test, accuracy_train])-0.1, np.amax([accuracy_test, accuracy_train])+0.1)
-    plt.savefig(pngfilename)
-    plt.clf()
+    plot(accuracy_train, accuracy_test, pngfilename)
 
+
+def plot(accuracy_train, accuracy_test, pngfilename):
+  #Plot the accuracies with pyplot
+  colors = iter(cm.rainbow(np.linspace(0, 1, 2))) #2 colors
+  plt.plot(range(accuracy_train.shape[0]), accuracy_train, color=next(colors), label="train={:.2%}".format(accuracy_train[-1]))
+  plt.plot(range(accuracy_test.shape[0]), accuracy_test, color=next(colors), label="test={:.2%}".format(accuracy_test[-1]))
+  plt.legend(loc='lower right')
+  plt.ylim(np.amin([accuracy_test, accuracy_train])-0.1, np.amax([accuracy_test, accuracy_train])+0.1)
+  plt.savefig(pngfilename)
+  plt.clf()
+  output(f'Plot in {pngfilename}')
 
 
 '''
