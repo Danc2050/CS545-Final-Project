@@ -134,7 +134,7 @@ def print_accuracy_slp(confusion_matrix):
 	return accuracy;
 
 
-def train():
+def train(maxTrainRows=25000, maxTestRows=5000):
 	#starting for the program2
 	#accuracy to be stored
 	test_accuracy = []
@@ -143,8 +143,8 @@ def train():
 	attributes = 24 #labels are included
 	learning_rate = 0.1
 	#importing from csv
-	train = np.genfromtxt('SLP\\credit_card_train.csv',delimiter=',',max_rows=25000) #max 25000
-	test = np.genfromtxt('SLP\\credit_card_test.csv',delimiter=',',max_rows=5000) #max 5000
+	train = np.genfromtxt('SLP\\credit_card_train.csv',delimiter=',',max_rows=maxTrainRows)
+	test = np.genfromtxt('SLP\\credit_card_test.csv',delimiter=',',max_rows=maxTestRows)
 
 	#separating labels
 	label_train = add_label(train,(train.shape[0]))
