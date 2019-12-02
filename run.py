@@ -28,20 +28,18 @@ except ImportError as error:
 
 assert sys.version_info >= (3, 6) #Pyhon 3 required
 
-quiet = False
 serial = False
 
 
 def main(argv):
-  global quiet
   global serial
   versions = []
   def usage():
-    print(f'Usage: {argv[0]} [--quiet] [--serial] [-v <bayes | slp | mlp>]')
+    print(f'Usage: {argv[0]} [--serial] [-v <bayes | slp | mlp>]')
     exit(2)
 
   try: 
-    opts, args = getopt.getopt(argv[1:], ":v:qs", ['quiet', 'serial'])
+    opts, args = getopt.getopt(argv[1:], ":v:qs", ['serial'])
   except getopt.GetoptError: 
     usage()
 
@@ -53,7 +51,6 @@ def main(argv):
       if arg not in ('bayes', 'slp', 'mlp'):
         usage()
       versions.append(arg)
-    if opt in ('-q', '--quiet'):  quiet = True
     if opt in ('-s', '--serial'): serial = True
 
   versions = list(set(versions)) #Make distinct
@@ -74,7 +71,7 @@ def main(argv):
 
 def bayes():
   outfilename = path.join('output', 'bayes.txt')
-  output(f'Executing bayes (output in {outfilename})')
+  print(f'Executing bayes (output in {outfilename})')
   with open(outfilename, 'w+') as outfile:
     redirectOutputToFile(outfile)
     import bayes
@@ -84,7 +81,7 @@ def bayes():
 def slp():
   outfilename = path.join('output', 'slp.txt')
   pngfilename = path.join('output', 'slp.png')
-  output(f'Executing slp (output in {outfilename})')
+  print(f'Executing slp (output in {outfilename})')
   with open(outfilename, 'w+') as outfile:
     redirectOutputToFile(outfile)
     from SLP import slp
@@ -111,7 +108,7 @@ def slp():
 def mlp():
   outfilename = path.join('output', 'mlp.txt')
   pngfilename = path.join('output', 'mlp.png')
-  output(f'Executing mlp (output in {outfilename})')
+  print(f'Executing mlp (output in {outfilename})')
   with open(outfilename, 'w+') as outfile:
     redirectOutputToFile(outfile)
     import neural
@@ -134,7 +131,11 @@ def mlp():
     plot(accuracy_train, accuracy_test, pngfilename)
 
 
-#Plot the accuracies with pyplot
+'''
+  Plot the training and test accuracy with pyplot.
+  Each line is a different color, with a legend in the lower right.
+  The y axis is scaled to +- 0.1 of the min/max values plotted.
+'''
 def plot(accuracy_train, accuracy_test, pngfilename):
   colors = iter(cm.rainbow(np.linspace(0, 1, 2))) #2 colors
   plt.plot(range(accuracy_train.shape[0]), accuracy_train, color=next(colors), label="train={:.2%}".format(accuracy_train[-1]))
@@ -143,8 +144,7 @@ def plot(accuracy_train, accuracy_test, pngfilename):
   plt.ylim(np.amin([accuracy_test, accuracy_train])-0.1, np.amax([accuracy_test, accuracy_train])+0.1)
   plt.savefig(pngfilename)
   plt.clf()
-  output(f'Plot in {pngfilename}')
-
+  print(f'Plot in {pngfilename}')
 
 '''
   Redirects standard output and errors to the file supplied
@@ -158,12 +158,6 @@ def redirectOutputToFile(f):
 def restoreStandardOutput():
   sys.stdout = sys.__stdout__
   sys.stderr = sys.__stderr__
-
-'''
-  Allows output to be easily turned on or off.
-'''
-def output(s, end='\n'):
-  if not quiet: print(s, end=end, flush=True)
 
 
 if __name__=="__main__":
