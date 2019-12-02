@@ -49,15 +49,12 @@ def slp_weight_update(data_input,weights,label_input,learning_rate):
 	"""
 
 	output = np.dot(data_input,np.transpose(weights)) #transpose to allow for dot product
-	if(output > 0):
-		output = 1
-	else:
-		output = 0
-	if (label_input != output): #the target is not the same change weights
-		for x in range(weights.shape[0]): #goes through all the weights
-			weights[x] = weights[x] - (learning_rate * (output - label_input) * data_input[x])
+	output = 1 if output > 0 else 0
 
-	return weights;
+	#If the prediction is incorrect then update all of the weights
+	if (label_input != output):
+		weights = weights - (learning_rate * (output - label_input) * data_input)
+	return weights
 
 def epoch_train_slp(data_input,label_input, learning_rate,weights, confusion_matrix,label_test,test_input, epoch_input, train_accuracy, test_accuracy):
 	"""
