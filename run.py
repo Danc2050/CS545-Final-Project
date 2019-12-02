@@ -76,22 +76,20 @@ def bayes():
   outfilename = path.join('output', 'bayes.txt')
   output(f'Executing bayes (output in {outfilename})')
   with open(outfilename, 'w+') as outfile:
-    sys.stdout = sys.stderr = outfile
+    redirectOutputToFile(outfile)
     import bayes
     bayes.main()
-    sys.stdout = sys.__stdout__
-    sys.stderr = sys.__stderr__
+    restoreStandardOutput()
     
 def slp():
   outfilename = path.join('output', 'slp.txt')
   pngfilename = path.join('output', 'slp.png')
   output(f'Executing slp (output in {outfilename})')
   with open(outfilename, 'w+') as outfile:
-    sys.stdout = sys.stderr = outfile
+    redirectOutputToFile(outfile)
     from SLP import slp
     slp.train()
-    sys.stdout = sys.__stdout__
-    sys.stderr = sys.__stderr__
+    restoreStandardOutput()
   with open(outfilename, 'r') as infile:
     accuracy_train = []
     accuracy_test = []
@@ -115,11 +113,10 @@ def mlp():
   pngfilename = path.join('output', 'mlp.png')
   output(f'Executing mlp (output in {outfilename})')
   with open(outfilename, 'w+') as outfile:
-    sys.stdout = sys.stderr = outfile
+    redirectOutputToFile(outfile)
     import neural
     neural.main()
-    sys.stdout = sys.__stdout__
-    sys.stderr = sys.__stderr__
+    restoreStandardOutput()
   with open(outfilename, 'r') as infile:
     accuracy_train = []
     accuracy_test = []
@@ -148,6 +145,19 @@ def plot(accuracy_train, accuracy_test, pngfilename):
   plt.clf()
   output(f'Plot in {pngfilename}')
 
+
+'''
+  Redirects standard output and errors to the file supplied
+'''
+def redirectOutputToFile(f):
+  sys.stdout = sys.stderr = f
+
+'''
+  Restores output to the standard (screen) output in case it was redirected.
+'''
+def restoreStandardOutput():
+  sys.stdout = sys.__stdout__
+  sys.stderr = sys.__stderr__
 
 '''
   Allows output to be easily turned on or off.
