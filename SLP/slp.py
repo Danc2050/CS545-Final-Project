@@ -1,4 +1,3 @@
-#function
 import numpy as np
 
 def add_label(data,number_of_inputs):
@@ -133,3 +132,57 @@ def print_accuracy_slp(confusion_matrix):
 	confusion_matrix.fill(0) # resets matrix
 
 	return accuracy;
+
+
+def train():
+	#starting for the program2
+	#accuracy to be stored
+	test_accuracy = []
+	train_accuracy = []
+	#initial data
+	attributes = 24 #labels are included
+	learning_rate = 0.1
+	#importing from csv
+	train = np.genfromtxt('SLP\\credit_card_train.csv',delimiter=',',max_rows=25000) #max 25000
+	test = np.genfromtxt('SLP\\credit_card_test.csv',delimiter=',',max_rows=5000) #max 5000
+
+	#separating labels
+	label_train = add_label(train,(train.shape[0]))
+	label_test = add_label(test,(test.shape[0]))
+
+	#preprocess data
+
+	train = preprocess(train)
+	test = preprocess(test)
+
+	#create weight matrix
+
+	weights_train = create_weights_slp(attributes) #24 one for the bias and only one output
+
+	#confusion matrix creation
+
+	conf_matrix = confusion_matrix_create(2)
+
+	#epoch train
+	weights_train = epoch_train_slp(train,label_train, learning_rate,weights_train, conf_matrix,label_test,test,200,train_accuracy,test_accuracy)
+
+
+	#Print the results to the screen in a flat format
+	print("Training accuracy: ", end="")
+	print(*train_accuracy, sep=",")
+	print("Test accuracy: ", end="")
+	print(*test_accuracy, sep=",")
+
+	"""
+	#export file
+	with open("train_accuracy.txt",'w') as e:
+		e.write(str(train_accuracy))
+		e.write("\n")
+		e.close()
+
+	with open("test_accuracy.txt",'w') as f:
+		f.write(str(test_accuracy))
+		f.write("\n")
+		f.close()
+	"""
+
