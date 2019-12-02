@@ -137,8 +137,8 @@ def mlp():
     plot(accuracy_train, accuracy_test, pngfilename)
 
 
+#Plot the accuracies with pyplot
 def plot(accuracy_train, accuracy_test, pngfilename):
-  #Plot the accuracies with pyplot
   colors = iter(cm.rainbow(np.linspace(0, 1, 2))) #2 colors
   plt.plot(range(accuracy_train.shape[0]), accuracy_train, color=next(colors), label="train={:.2%}".format(accuracy_train[-1]))
   plt.plot(range(accuracy_test.shape[0]), accuracy_test, color=next(colors), label="test={:.2%}".format(accuracy_test[-1]))
