@@ -1,4 +1,5 @@
 import numpy as np
+from os import path
 
 def add_label(data,number_of_inputs):
 	"""
@@ -48,7 +49,7 @@ def slp_weight_update(data_input,weights,label_input,learning_rate):
 	learning_rate: The learning rate from gradient descent formula
 	"""
 
-	output = np.dot(data_input,np.transpose(weights)) #transpose to allow for dot product
+	output = np.dot(data_input, weights.T) #transpose to allow for dot product
 	output = 1 if output > 0 else 0
 
 	#If the prediction is incorrect then update all of the weights
@@ -113,8 +114,8 @@ def train(maxTrainRows=25000, maxTestRows=5000):
 	attributes = 24 #labels are included
 	learning_rate = 0.1
 	#importing from csv
-	train = np.genfromtxt('SLP\\credit_card_train.csv',delimiter=',',max_rows=maxTrainRows)
-	test = np.genfromtxt('SLP\\credit_card_test.csv',delimiter=',',max_rows=maxTestRows)
+	train = np.genfromtxt(path.join('SLP','credit_card_train.csv'), delimiter=',',max_rows=maxTrainRows)
+	test = np.genfromtxt(path.join('SLP','credit_card_test.csv'), delimiter=',',max_rows=maxTestRows)
 
 	#separating labels
 	label_train = add_label(train,(train.shape[0]))
