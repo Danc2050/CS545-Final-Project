@@ -106,22 +106,8 @@ def test_slp(weights,confusion_matrix,label_tests,input_tests):
 	label_tests: labels for the test data
 	"""
 	output = np.dot(input_tests,np.transpose(weights)) #transpose to allow for dot product
-	if (output > 0):
-		output = 1
-	else:
-		output = 0
-
-	if (output == 1):
-		if (label_tests == 1):
-			confusion_matrix[1][1] += 1
-		else:
-			confusion_matrix[0][1] += 1
-	else:
-		if (label_tests == 0):
-			confusion_matrix[0][0] += 1
-		else:
-			confusion_matrix[1][0] += 1
-	return;
+	output = 1 if output > 0 else 0
+	confusion_matrix[int(label_tests)][output] += 1
 
 def print_accuracy_slp(confusion_matrix):
 	"""
