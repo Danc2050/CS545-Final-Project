@@ -64,6 +64,9 @@ def conf_matrix(test, class_choice):
     print("Accuracy: {}\nPrecision: {}\nRecall: {}".format((tp+tn)/7500 * 100, tp / (tp/fp),tp/(tp+fn)))
 
 def main():
+    # Set to true to read in credit data.
+    optional = True
+
     # part 1 -- reading in data
 
     # randomized version
@@ -109,9 +112,19 @@ def main():
     bad_stddev = np.clip(bad_stddev, min_std_dev, None) # enforces minimum std_devs to be > 0.
     good_stddev = np.clip(good_stddev, min_std_dev, None) # '                                 '
 
+    # OPTIONAL STEP 1 -- Load in our own data
+    if optional:
+        daniel = np.genfromtxt("data/Daniel_Connelly_row.txt", delimiter=',')
+        examples = np.append(examples, daniel)
+
     #[] part 3 -- Run NB on test data -- gives P(x_i | class) for each class it is given
     class_bad = class_NB(bad_credit_mean, bad_stddev, test, bad_prior)
     class_good = class_NB(good_credit_mean, good_stddev, test, good_prior)
+
+    # OPTIONAL STEP 2 -- result data for Daniel
+    if optional:
+        if class_bad[7499] > class_good[7499]: print ("Daniel is a credit delinquent.")
+        else: print("Daniel is not a credit delinquent.")
 
     #* find argmax of decisions (bad credit or good credit) for each class of test set. One loop due to even # of data
     class_choice = []
