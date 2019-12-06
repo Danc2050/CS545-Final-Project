@@ -6,6 +6,7 @@ Fall 2019
 import numpy as np
 from sklearn.metrics import confusion_matrix
 import sys
+from time import sleep
 
 def prior_prob(good, bad):
     '''
@@ -51,6 +52,7 @@ def conf_matrix(test, class_choice):
     for i in range(np.shape(test)[0]):
         target_list.append(test[i][24])
 
+    # TODO -- is this function giving a wrong result?
     conf_matrix = confusion_matrix(target_list,class_choice) # similar to program #1
     tp = conf_matrix[0][0]
     fp = conf_matrix[0][1]
@@ -59,49 +61,43 @@ def conf_matrix(test, class_choice):
 
     print(conf_matrix)
     print("Tp, fp, fn, tn: ",tp,fp,fn,tn)
-    print("Accuracy: {}\nPrecision: {}\nRecall: {}".format((tp+tn)/15000 * 100, tp / (tp/fp),tp/(tp+fn)))
+    print("Accuracy: {}\nPrecision: {}\nRecall: {}".format((tp+tn)/7500 * 100, tp / (tp/fp),tp/(tp+fn)))
 
 def main():
+    # Set to true to read in credit data.
+    optional = True
+
     # part 1 -- reading in data
-    # non-randomized version
 
     # randomized version
     bad = []; good = []; test = [];
-    examples = np.genfromtxt("data/data.csv", delimiter=',')
+    examples = np.genfromtxt("data/data.csv", delimiter=',') # There are 6636 "bad" credit examples, 23364 "good" examples
     np.random.shuffle(examples)
+
+    # ensuring proper ratios
+      # Since we have a small amount of test and train, I decided to make a 3:1 ratio of good + bad train data and good + bad test data. This makes the entire train and test data 3:1.
+        # Good data ratio
+            # If we use 3/4 * 23364 = 17523
+            # 1/4 * 23364 = 5841
+            # This is 3(train):1(test) of the good creditors data
+        # Bad data ratio
+            # 3/4 * 6636 = 4977
+            # 1/4 * 6636 = 1659
+            # This is 3(train):1(test) of the bad creditors data,
     for line in examples:
-        if len(test) != 15000: # There is an odditiy here... if I place it last, I only get good credit owners...
-            test.append(line)
-        elif line[24] == 0.0 and len(good) != 7500: good.append(line)
-        elif line[24] == 1.0 and len(bad) != 7500: bad.append(line)
+        if len(good) < 17523 and line[24] == 0.0: good.append(line)
+        elif len(bad) < 4977 and line[24] == 1.0: bad.append(line) # 3000 is close to 3:1/train:test
+        else: test.append(line)
+
+    # to print out shapes of our data to verify ratios
+    print("Test(5841 Good and 1659 Bad): " + str(np.shape(test)))
+    print("Train Good: " + str(np.shape(good)))
+    print("Train Bad: " + str(np.shape(bad)))
 
     # conversion of arrays to numpy arrays
     bad = np.asarray(bad, dtype=np.float128)
     good = np.asarray(good, dtype=np.float128)
     test = np.asarray(test, dtype=np.float128)
-
-    '''
-    #The below is for testing purposes only
-    test_good = []; test_bad = [];
-    print(np.shape(bad))
-    print(np.shape(good))
-    print(np.shape(test))
-    import time
-    for line in test:
-        print(line[24])
-        if line[24] == 0.0: test_good.append(line)
-        elif line[24] == 1.0: test_bad.append(line)
-
-    test_bad = np.asarray(test_bad, dtype=np.float128)
-    test_good = np.asarray(test_good, dtype=np.float128)
-
-    print(np.shape(test_bad))
-    print(np.shape(test_good))
-    test_bad, test_good = prior_prob(test_good, test_bad)
-    print(test_bad, test_good)
-    sys.exit()
-    #end testing purpose
-    '''
 
     #[] part 2 -- create probabilistic model
     min_std_dev = 0.01
@@ -113,25 +109,28 @@ def main():
     bad_credit_mean, bad_stddev = prob_model(bad)
     good_credit_mean, good_stddev = prob_model(good)
 
-    for i in range(len(bad_stddev)):
-        if bad_stddev[i] == 0:
-           #print(bad_stddev[i])
-           bad_stddev[i] = min_std_dev # Set any 0 std dev to min_std_dev to avoid divide by zero error
-    # good credit
-    for i in range(len(good_stddev)):
-        if good_stddev[i] == 0:
-           #print(good_stddev[i])
-           good_stddev[i] = min_std_dev # Set any 0 std dev to min_std_dev to avoid divide by zero error
+    bad_stddev = np.clip(bad_stddev, min_std_dev, None) # enforces minimum std_devs to be > 0.
+    good_stddev = np.clip(good_stddev, min_std_dev, None) # '                                 '
+
+    # OPTIONAL STEP 1 -- Load in our own data
+    if optional:
+        daniel = np.genfromtxt("data/Daniel_Connelly_row.txt", delimiter=',')
+        examples = np.append(examples, daniel)
 
     #[] part 3 -- Run NB on test data -- gives P(x_i | class) for each class it is given
     class_bad = class_NB(bad_credit_mean, bad_stddev, test, bad_prior)
     class_good = class_NB(good_credit_mean, good_stddev, test, good_prior)
 
+    # OPTIONAL STEP 2 -- result data for Daniel
+    if optional:
+        if class_bad[7499] > class_good[7499]: print ("Daniel is a credit delinquent.")
+        else: print("Daniel is not a credit delinquent.")
+
     #* find argmax of decisions (bad credit or good credit) for each class of test set. One loop due to even # of data
     class_choice = []
     for i in range(0, len(class_bad)):
-        if class_bad[i] > class_good[i]: class_choice.append(1)
-        if class_bad[i] <= class_good[i]: class_choice.append(0)
+        if class_bad[i] > class_good[i]: class_choice.append(1.0)
+        if class_bad[i] <= class_good[i]: class_choice.append(0.0)
 
     #* Results
     conf_matrix(test, class_choice)
