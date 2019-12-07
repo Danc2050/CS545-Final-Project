@@ -1,5 +1,6 @@
  initial accuracy: (train 0.22, test 0.22)
  --- --- epoch 0: (mom-0.5, nH-10, tSize-1.0)
+
  accuracy: (train 0.81, test 0.82)
  --- --- epoch 1: (mom-0.5, nH-10, tSize-1.0)
  accuracy: (train 0.82, test 0.82)
