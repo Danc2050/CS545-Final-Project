@@ -44,6 +44,7 @@ def train_test(train_set, valid_set, test_set, param, cnt_class):
     (a02, confu02) = model.test(train_data[0], train_data[1], cnt_class) # init result test
     print(" initial accuracy: (train {0:.2f}, test {1:.2f})".format(a01, a02))
     
+    final_confu = confu02
     for i in range(max_epoch):
         print(" --- --- epoch {0}: (mom-{1}, nH-{2}, tSize-{3})".format(i, momentum, hidden_nodes, train_size))
         train_data = shuffle_sets(train_data, cnt_class) # shuffle
@@ -51,6 +52,11 @@ def train_test(train_set, valid_set, test_set, param, cnt_class):
         (a1, confu1) = model.test(train_data[0], train_data[1], cnt_class) # run train dataset
         (a2, confu2) = model.test(test_set[0], test_set[1], cnt_class) # run test set
         print(" accuracy: (train {0:.2f}, test {1:.2f})".format(a1, a2))
+        final_confu = confu2
+    tp, fp, tn, fn = final_confu[1,1], final_confu[0,1], final_confu[0,0], final_confu[1,0]
+    precision, recall = tp / (tp + fp), tp / (tp + fn)
+    print(" tp = {0}, fp = {1}, tn = {2}, fn = {3}".format( tp, fp, tn, fn))
+    print(" precision = {0}, recall = {1}".format(precision, recall))
 
 def sweep_test(train_set, valid_set, test_set, cnt_class):
     # parameters array: eta, momentum, hidden_nodes, train_size, max_epoch, batch_size
@@ -61,8 +67,8 @@ def sweep_test(train_set, valid_set, test_set, cnt_class):
         # (0.1,   0,     10,   1.0,   50,   100), # momentum 0, 0.25, 0.5
         # (0.1,   0.25,  10,   1.0,   50,   100),
          (0.1,   0.5,   10,   1.0,   50,   100),
-        # (0.1,   0.9,   10,   0.25,  50,   100), # train size 0.25, 0.5
-        # (0.1,   0.9,   10,   0.5,   50,   100)
+        # (0.1,   0.9,   10,   0.5,   50,   100), # train size 0.25, 0.5
+        # (0.1,   0.9,   10,   0.25,  50,   100)
     ]
 
     for param in params_arr:
