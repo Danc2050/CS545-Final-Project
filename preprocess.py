@@ -22,8 +22,8 @@ def preproc():
         else: test.append(line)
 
     # conversion of arrays to numpy arrays
-    bad = np.asarray(bad, dtype=np.float128)
-    good = np.asarray(good, dtype=np.float128)
-    test = np.asarray(test, dtype=np.float128)
+    bad = np.asarray(bad, dtype=np.longdouble)
+    good = np.asarray(good, dtype=np.longdouble)
+    test = np.asarray(test, dtype=np.longdouble)
 
     return data, bad, good, test
