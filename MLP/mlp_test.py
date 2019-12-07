@@ -56,7 +56,7 @@ def train_test(train_set, valid_set, test_set, param, cnt_class):
     tp, fp, tn, fn = final_confu[1,1], final_confu[0,1], final_confu[0,0], final_confu[1,0]
     precision, recall = tp / (tp + fp), tp / (tp + fn)
     print(" tp = {0}, fp = {1}, tn = {2}, fn = {3}".format( tp, fp, tn, fn))
-    print(" precision = {0}, recall = {1}".format(precision, recall))
+    print(" precision = {0:.2f}, recall = {1:.2f}".format(precision, recall))
 
 def sweep_test(train_set, valid_set, test_set, cnt_class):
     # parameters array: eta, momentum, hidden_nodes, train_size, max_epoch, batch_size
