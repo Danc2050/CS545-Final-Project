@@ -54,7 +54,7 @@ def prepare_data(data, idx_label, train_n, valid_n, test_n):
       in: np array with all raw dataset
       out: inputs, labels as np arrays
   '''
-  #alter_labels(data, idx_label) # rearrange data for later splitting
+  alter_labels(data, idx_label) # rearrange data for later splitting
 
   labels = data[:, [idx_label]] # grab labels
   labels = labels - np.amin(labels) # remove offset, so start from '0'
