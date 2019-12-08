@@ -56,7 +56,7 @@ def main(argv):
   versions = list(set(versions)) #Make distinct
   if versions == []: versions = ['bayes', 'slp', 'mlp'] #Run them all
 
-  if serial: #Just simply run each one
+  if serial or (len(versions) == 1): #Just simply run each one
     if 'bayes' in versions: bayes()
     if 'slp' in versions:   slp()
     if 'mlp' in versions:   mlp()
