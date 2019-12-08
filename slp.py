@@ -1,5 +1,6 @@
 import numpy as np
 from os import path
+import prepare
 
 def add_label(data,number_of_inputs):
 	"""
@@ -114,17 +115,20 @@ def train(maxTrainRows=25000, maxTestRows=5000):
 	attributes = 24 #labels are included
 	learning_rate = 0.1
 	#importing from csv
-	train = np.genfromtxt(path.join('SLP','credit_card_train.csv'), delimiter=',',max_rows=maxTrainRows)
-	test = np.genfromtxt(path.join('SLP','credit_card_test.csv'), delimiter=',',max_rows=maxTestRows)
+	data = np.genfromtxt(path.join('data', 'data.csv'), delimiter=',')
+	idx_label = np.shape(data)[1] - 1 # last column
+	(data_train, data_test, labels_train, labels_test, n_class) = prepare.prepare_data(data, idx_label)
+	#train = np.genfromtxt(path.join('SLP','credit_card_train.csv'), delimiter=',',max_rows=maxTrainRows)
+	#test = np.genfromtxt(path.join('SLP','credit_card_test.csv'), delimiter=',',max_rows=maxTestRows)
 
 	#separating labels
-	label_train = add_label(train,(train.shape[0]))
-	label_test = add_label(test,(test.shape[0]))
+	#label_train = add_label(train,(train.shape[0]))
+	#label_test = add_label(test,(test.shape[0]))
 
 	#preprocess data
-
-	train = preprocess(train)
-	test = preprocess(test)
+	#pre processed with prepared
+	#train = preprocess(train)
+	#test = preprocess(test)
 
 	#create weight matrix
 
@@ -135,7 +139,7 @@ def train(maxTrainRows=25000, maxTestRows=5000):
 	conf_matrix = confusion_matrix_create(2)
 
 	#epoch train
-	weights_train = epoch_train_slp(train,label_train, learning_rate,weights_train, conf_matrix,label_test,test,200,train_accuracy,test_accuracy)
+	weights_train = epoch_train_slp(data_train,labels_train, learning_rate,weights_train, conf_matrix,labels_test,data_test,200,train_accuracy,test_accuracy)
 
 
 	#Print the results to the screen in a flat format

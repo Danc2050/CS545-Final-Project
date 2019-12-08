@@ -1,12 +1,12 @@
 Test(5841 Good and 1659 Bad): (7500, 25)
-Train Good: (17506, 25)
-Train Bad: (4994, 25)
-Prior of the bad credit score: 0.22195555555555554. Prior of the good: 0.7780444444444444.
+Train Good: (17492, 25)
+Train Bad: (5008, 25)
+Prior of the bad credit score: 0.2225777777777778. Prior of the good: 0.7774222222222222.
 Daniel is not a credit delinquent.
 asdfasdf
-[[5843   15]
- [1618   24]]
-Tp, fp, fn, tn:  5843 15 1618 24
-Accuracy: 78.22666666666666
-Precision: 14.999999999999998
-Recall: 0.783138989411607
+[[5861   11]
+ [1611   17]]
+Tp, fp, fn, tn:  5861 11 1611 17
+Accuracy: 78.37333333333333
+Precision: 10.999999999999998
+Recall: 0.7843950749464668

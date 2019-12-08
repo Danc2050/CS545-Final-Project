@@ -82,7 +82,8 @@ def slp():
   pngfilename = path.join('output', 'slp.png')
   print(f'Executing slp (output in {outfilename})')
   def runModel():
-    from SLP import slp
+    #from SLP import slp
+    import slp
     slp.train()
   redirectFunctionOutputToFile(runModel, outfilename)
   with open(outfilename, 'r') as infile:
