@@ -23,7 +23,7 @@ def normalize_data(data):
   return ret
 
 
-def prepare_data(data, idx_label, test_size=0.25):
+def prepare_data(data, idx_label, test_size=0.25, normalize=True):
   ''' preprocess data for training
       in: np array with all raw dataset
       out: inputs, labels as np arrays
@@ -32,7 +32,7 @@ def prepare_data(data, idx_label, test_size=0.25):
   labels = labels - np.amin(labels) # remove offset, so start from '0'
   n_class = int(np.amax(labels) + 1) # assume continous class numbers
   data = np.delete(data, idx_label, axis=1) #Remove labels from data
-  data = normalize_data(data)
+  if normalize: data = normalize_data(data)
   data_train, data_test, labels_train, labels_test = train_test_split(data, labels, test_size=test_size)
   return (data_train, data_test, labels_train, labels_test, n_class)
 
