@@ -69,7 +69,7 @@ def main():
     optional = True
 
     import prepare
-    (data, data_train, data_test, labels_train, labels_test, n_class) = prepare.prepare_data()
+    (data, data_train, data_test, labels_train, labels_test, n_class) = prepare.getPreparedData()
     examples = data
     bad = []
     good = []

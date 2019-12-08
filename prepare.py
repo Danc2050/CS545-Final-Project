@@ -23,7 +23,7 @@ def normalize_data(data):
   return ret
 
 
-def prepare_data(test_size=0.25, normalize=True):
+def getPreparedData(test_size=0.25, normalize=True):
   ''' preprocess data for training
       in: np array with all raw dataset
       out: inputs, labels as np arrays

@@ -104,7 +104,7 @@ def train(maxTrainRows=25000, maxTestRows=5000):
 	#initial data
 	attributes = 24 #labels are included
 	learning_rate = 0.1
-	(data, data_train, data_test, labels_train, labels_test, n_class) = prepare.prepare_data(normalize=False)
+	(data, data_train, data_test, labels_train, labels_test, n_class) = prepare.getPreparedData(normalize=False)
 
 	#create weight matrix
 

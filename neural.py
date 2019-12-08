@@ -5,13 +5,13 @@ Authors: Dalton, Ebele, Dawei, Daniel Lee, Daniel Connelly
 Class: CS545 - Fall 2019 | Professor Anthony Rhodes
 '''
 import numpy as np
-from prepare import prepare_data
+import prepare
 from MLP import mlp_test as mt
 
 
 
 def main():
-  (data, data_train, data_test, labels_train, labels_test, n_class) = prepare_data()
+  (data, data_train, data_test, labels_train, labels_test, n_class) = prepare.getPreparedData()
   data_train = (data_train, labels_train)
   data_test = (data_test, labels_test)
 
