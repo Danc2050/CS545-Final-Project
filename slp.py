@@ -1,5 +1,4 @@
 import numpy as np
-from os import path
 import prepare
 
 def add_label(data,number_of_inputs):
@@ -105,7 +104,6 @@ def train(maxTrainRows=25000, maxTestRows=5000):
 	#initial data
 	attributes = 24 #labels are included
 	learning_rate = 0.1
-	#importing from csv
 	(data, data_train, data_test, labels_train, labels_test, n_class) = prepare.prepare_data(normalize=False)
 
 	#create weight matrix

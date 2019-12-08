@@ -69,7 +69,6 @@ def main():
     optional = True
 
     import prepare
-    from os import path
     (data, data_train, data_test, labels_train, labels_test, n_class) = prepare.prepare_data()
     examples = data
     bad = []
