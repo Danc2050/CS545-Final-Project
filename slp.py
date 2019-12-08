@@ -129,16 +129,3 @@ def train(maxTrainRows=25000, maxTestRows=5000):
 	print("Test accuracy: ", end="")
 	print(*test_accuracy, sep=",")
 
-	"""
-	#export file
-	with open("train_accuracy.txt",'w') as e:
-		e.write(str(train_accuracy))
-		e.write("\n")
-		e.close()
-
-	with open("test_accuracy.txt",'w') as f:
-		f.write(str(test_accuracy))
-		f.write("\n")
-		f.close()
-	"""
-
