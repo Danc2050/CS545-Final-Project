@@ -40,6 +40,4 @@ def getPreparedData(test_size=0.25, normalize=True):
 
   
 if __name__=="__main__":
-  data = np.genfromtxt(path.join('data', 'data.csv'), delimiter=',')
-  idx_label = np.shape(data)[1] - 1 # last column
-  (train_set, test_set, n_class) = prepare_data(data, idx_label, 3, 1, 1)
+  return getPreparedData()
