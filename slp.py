@@ -12,15 +12,6 @@ def add_label(data,number_of_inputs):
 	label = data[:,0]
 	return label;
 
-def preprocess(data):
-	"""
-	Makes first column bias of 1
-	data: data set
-	"""
-	array_data = np.array(data,dtype=float)
-	array_data[:,0] = 1
-	return array_data;
-
 def create_weights_slp(rows):
 	"""
 	generates initial weights from -0.5 to 0.5
@@ -117,18 +108,7 @@ def train(maxTrainRows=25000, maxTestRows=5000):
 	#importing from csv
 	data = np.genfromtxt(path.join('data', 'data.csv'), delimiter=',')
 	idx_label = np.shape(data)[1] - 1 # last column
-	(data_train, data_test, labels_train, labels_test, n_class) = prepare.prepare_data(data, idx_label)
-	#train = np.genfromtxt(path.join('SLP','credit_card_train.csv'), delimiter=',',max_rows=maxTrainRows)
-	#test = np.genfromtxt(path.join('SLP','credit_card_test.csv'), delimiter=',',max_rows=maxTestRows)
-
-	#separating labels
-	#label_train = add_label(train,(train.shape[0]))
-	#label_test = add_label(test,(test.shape[0]))
-
-	#preprocess data
-	#pre processed with prepared
-	#train = preprocess(train)
-	#test = preprocess(test)
+	(data_train, data_test, labels_train, labels_test, n_class) = prepare.prepare_data(data, idx_label, normalize=False)
 
 	#create weight matrix
 
