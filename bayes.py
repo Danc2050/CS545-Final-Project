@@ -49,6 +49,7 @@ def class_NB(mean, stddev, test, prior):
 
 def conf_matrix(test, class_choice):
     target_list = [];
+    print('asdfasdf')
     for i in range(np.shape(test)[0]):
         target_list.append(test[i][24])
 
@@ -67,9 +68,21 @@ def main():
     # Set to true to read in credit data.
     optional = True
 
-    # part 1 -- reading in data
-    import preprocess
-    examples, bad, good, test = preprocess.preproc()
+    import prepare
+    from os import path
+    data = np.genfromtxt(path.join('data', 'data.csv'), delimiter=',')
+    idx_label = np.shape(data)[1] - 1 # last column
+    (data_train, data_test, labels_train, labels_test, n_class) = prepare.prepare_data(data, idx_label)
+    examples = data
+    bad = []
+    good = []
+    for i in range(data_train.shape[0]):
+        if int(labels_train[i]) == 1: bad.append(np.concatenate((data_train[i],[1])))
+        else: good.append(np.concatenate((data_train[i],[0])))
+    good = np.array(good)
+    bad = np.array(bad)
+    test = np.append(data_test, labels_test, axis=1)
+
 
     # to print out shapes of our data to verify ratios
     print("Test(5841 Good and 1659 Bad): " + str(np.shape(test)))
