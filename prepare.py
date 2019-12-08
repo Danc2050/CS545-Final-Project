@@ -4,6 +4,7 @@ Authors: Dalton, Ebele, Dawei, Daniel Lee, Daniel Connelly
 Class: CS545 - Fall 2019 | Professor Anthony Rhodes
 '''
 import numpy as np
+from os import path
 
 def normalize_data(data):
   ''' normalize data for training
@@ -72,6 +73,6 @@ def prepare_data(data, idx_label, train_n, valid_n, test_n):
   return (train_set, valid_set, test_set, n_class)
   
 if __name__=="__main__":
-  data = np.genfromtxt('data\data.csv', delimiter=',')
+  data = np.genfromtxt(path.join('data', 'data.csv'), delimiter=',')
   idx_label = np.shape(data)[1] - 1 # last column
   (train_set, valid_set, test_set, n_class) = prepare_data(data, idx_label, 3, 1, 1)
