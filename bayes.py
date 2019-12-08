@@ -1,7 +1,7 @@
 '''
-Training Naive Bayes Classifier for our final project CS545 taught by Anthony Rhodes
-Daniel Connelly, Dalton Boehnig, Ebele Esimai, Dawei Zhang, Daniel Lee
-Fall 2019
+Training Naive Bayes Classifier.
+Authors: Daniel Connelly, Dalton Bohning, Ebele Esimai, Dawei Zhang, Daniel Lee
+Class: CS545 - Fall 2019 | Professor Anthony Rhodes
 '''
 import numpy as np
 from sklearn.metrics import confusion_matrix

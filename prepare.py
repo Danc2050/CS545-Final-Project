@@ -1,6 +1,6 @@
 '''
-Preprocess data, 
-Authors: Dalton, Ebele, Dawei, Daniel Lee, Daniel Connelly
+Preprocess data.
+Authors: Daniel Connelly, Dalton Bohning, Ebele Esimai, Dawei Zhang, Daniel Lee
 Class: CS545 - Fall 2019 | Professor Anthony Rhodes
 '''
 import numpy as np

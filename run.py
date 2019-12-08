@@ -1,8 +1,8 @@
 #!python
-
 '''
-  Authors: Dalton, Ebele, Dawei, Daniel Lee, Daniel Connelly
-  Class: CS545 - Fall 2019 | Professor Anthony Rhodes
+Runs each model and stores results in output/
+Authors: Daniel Connelly, Dalton Bohning, Ebele Esimai, Dawei Zhang, Daniel Lee
+Class: CS545 - Fall 2019 | Professor Anthony Rhodes
 '''
 import sys
 import getopt

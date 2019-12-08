@@ -1,9 +1,11 @@
+'''
+Single layer multi perceptron learning model.
+Authors: Daniel Connelly, Dalton Bohning, Ebele Esimai, Dawei Zhang, Daniel Lee
+Class: CS545 - Fall 2019 | Professor Anthony Rhodes
+'''
 import numpy as np
 
 class mlp:
-    """ a single layer multi perceptron learning model
-    """
-
     def __init__(self, feature_cnt: int, node_cnt: int, out_cnt: int):
         # use random number from -0.05 to 0.05 to init weights numbers
         # weights1 for input to hidden layer, weights2 for hidden to output

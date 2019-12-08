@@ -1,7 +1,7 @@
 '''
 Our neural net implementation on the credit-card data.
 Details: 1 Hidden layer (due to UAT), Dimensionality reduction.
-Authors: Dalton, Ebele, Dawei, Daniel Lee, Daniel Connelly
+Authors: Daniel Connelly, Dalton Bohning, Ebele Esimai, Dawei Zhang, Daniel Lee
 Class: CS545 - Fall 2019 | Professor Anthony Rhodes
 '''
 import numpy as np
