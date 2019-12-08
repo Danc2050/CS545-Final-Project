@@ -30,18 +30,17 @@ def expand_labels(data_set, cnt_out):
         exp_labels[i][int(data_set[1][i])] = 0.9 # true = 0.9
     return (data_set[0], exp_labels)
 
-def train_test(train_set, valid_set, test_set, param, cnt_class):
+def train_test(train_set, test_set, param, cnt_class):
     (eta, momentum, hidden_nodes, train_size, max_epoch, batch_size) = param
     train_data = get_train_data(train_set, train_size) # handle train_size
 
     # prepare all data sets for MLP calculation
     train_data = expand_labels(train_data, cnt_class)
-    #valid_set = expand_labels(valid_set, cnt_out) # not enabled yet TODO
     test_set = expand_labels(test_set, cnt_class)
 
     model = mlp.mlp(np.shape(train_data[0])[1], hidden_nodes, cnt_class) # init model
     (a01, confu01) = model.test(train_data[0], train_data[1], cnt_class) # init result train
-    (a02, confu02) = model.test(train_data[0], train_data[1], cnt_class) # init result test
+    (a02, confu02) = model.test(test_set[0], test_set[1], cnt_class) # init result test
     print(" initial accuracy: (train {0:.2f}, test {1:.2f})".format(a01, a02))
     
     final_confu = confu02
@@ -58,7 +57,7 @@ def train_test(train_set, valid_set, test_set, param, cnt_class):
     print(" tp = {0}, fp = {1}, tn = {2}, fn = {3}".format( tp, fp, tn, fn))
     print(" precision = {0:.2f}, recall = {1:.2f}".format(precision, recall))
 
-def sweep_test(train_set, valid_set, test_set, cnt_class):
+def sweep_test(train_set, test_set, cnt_class):
     # parameters array: eta, momentum, hidden_nodes, train_size, max_epoch, batch_size
     params_arr = [
         # (0.1,   0.9,   1,    1.0,   50,   100), # hidden nodes 1, 5, 10
@@ -72,4 +71,4 @@ def sweep_test(train_set, valid_set, test_set, cnt_class):
     ]
 
     for param in params_arr:
-        train_test(train_set, valid_set, test_set, param, cnt_class)
+        train_test(train_set, test_set, param, cnt_class)

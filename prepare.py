@@ -43,14 +43,14 @@ def alter_labels(data, idx_label):
     p1 += 1
   labels = data[:, [idx_label]]
 
-def split_indexes(n_train, n_validate, n_test, row_total):
+def split_indexes(n_train, n_test, row_total):
   ''' calculate where to split
   '''
-  i0 = n_train / (n_train + n_validate + n_test) * row_total
-  i1 = (n_train + n_validate) / (n_train + n_validate + n_test) * row_total
+  i0 = n_train / (n_train + n_test) * row_total
+  i1 = (n_train) / (n_train + n_test) * row_total
   return (int(i0), int(i1))
 
-def prepare_data(data, idx_label, train_n, valid_n, test_n):
+def prepare_data(data, idx_label, train_n, test_n):
   ''' preprocess data for training
       in: np array with all raw dataset
       out: inputs, labels as np arrays
@@ -65,14 +65,13 @@ def prepare_data(data, idx_label, train_n, valid_n, test_n):
   examples = normalize_data(raw_examples) # normalize
 
   # split
-  (i0, i1) = split_indexes(train_n, valid_n, test_n, np.shape(examples)[0])
+  (i0, i1) = split_indexes(train_n, test_n, np.shape(examples)[0])
   train_set = (examples[:i0], labels[0:i0])
-  valid_set = (examples[i0:i1], labels[i0:i1])
   test_set = (examples[i1:], labels[i1:])
 
-  return (train_set, valid_set, test_set, n_class)
+  return (train_set, test_set, n_class)
   
 if __name__=="__main__":
   data = np.genfromtxt(path.join('data', 'data.csv'), delimiter=',')
   idx_label = np.shape(data)[1] - 1 # last column
-  (train_set, valid_set, test_set, n_class) = prepare_data(data, idx_label, 3, 1, 1)
+  (train_set, test_set, n_class) = prepare_data(data, idx_label, 3, 1, 1)
