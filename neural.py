@@ -13,8 +13,7 @@ from MLP import mlp_test as mt
 
 def main():
   # read in data
-  data = np.genfromtxt(path.join('data', 'data.csv'), delimiter=',')
-  (data_train, data_test, labels_train, labels_test, n_class) = prepare_data(data)
+  (data, data_train, data_test, labels_train, labels_test, n_class) = prepare_data()
   data_train = (data_train, labels_train)
   data_test = (data_test, labels_test)
 

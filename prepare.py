@@ -23,11 +23,12 @@ def normalize_data(data):
   return ret
 
 
-def prepare_data(data, test_size=0.25, normalize=True):
+def prepare_data(test_size=0.25, normalize=True):
   ''' preprocess data for training
       in: np array with all raw dataset
       out: inputs, labels as np arrays
   '''
+  data = np.genfromtxt(path.join('data', 'data.csv'), delimiter=',')
   idx_label = np.shape(data)[1] - 1 # last column
   labels = data[:, [idx_label]] #Get labels column
   labels = labels - np.amin(labels) # remove offset, so start from '0'
@@ -35,7 +36,7 @@ def prepare_data(data, test_size=0.25, normalize=True):
   data = np.delete(data, idx_label, axis=1) #Remove labels from data
   if normalize: data = normalize_data(data)
   data_train, data_test, labels_train, labels_test = train_test_split(data, labels, test_size=test_size)
-  return (data_train, data_test, labels_train, labels_test, n_class)
+  return (data, data_train, data_test, labels_train, labels_test, n_class)
 
   
 if __name__=="__main__":

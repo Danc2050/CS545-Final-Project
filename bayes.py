@@ -70,8 +70,7 @@ def main():
 
     import prepare
     from os import path
-    data = np.genfromtxt(path.join('data', 'data.csv'), delimiter=',')
-    (data_train, data_test, labels_train, labels_test, n_class) = prepare.prepare_data(data)
+    (data, data_train, data_test, labels_train, labels_test, n_class) = prepare.prepare_data()
     examples = data
     bad = []
     good = []
