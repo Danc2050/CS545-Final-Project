@@ -71,8 +71,7 @@ def main():
     import prepare
     from os import path
     data = np.genfromtxt(path.join('data', 'data.csv'), delimiter=',')
-    idx_label = np.shape(data)[1] - 1 # last column
-    (data_train, data_test, labels_train, labels_test, n_class) = prepare.prepare_data(data, idx_label)
+    (data_train, data_test, labels_train, labels_test, n_class) = prepare.prepare_data(data)
     examples = data
     bad = []
     good = []

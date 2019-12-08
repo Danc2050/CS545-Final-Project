@@ -107,8 +107,7 @@ def train(maxTrainRows=25000, maxTestRows=5000):
 	learning_rate = 0.1
 	#importing from csv
 	data = np.genfromtxt(path.join('data', 'data.csv'), delimiter=',')
-	idx_label = np.shape(data)[1] - 1 # last column
-	(data_train, data_test, labels_train, labels_test, n_class) = prepare.prepare_data(data, idx_label, normalize=False)
+	(data_train, data_test, labels_train, labels_test, n_class) = prepare.prepare_data(data, normalize=False)
 
 	#create weight matrix
 

@@ -23,11 +23,12 @@ def normalize_data(data):
   return ret
 
 
-def prepare_data(data, idx_label, test_size=0.25, normalize=True):
+def prepare_data(data, test_size=0.25, normalize=True):
   ''' preprocess data for training
       in: np array with all raw dataset
       out: inputs, labels as np arrays
   '''
+  idx_label = np.shape(data)[1] - 1 # last column
   labels = data[:, [idx_label]] #Get labels column
   labels = labels - np.amin(labels) # remove offset, so start from '0'
   n_class = int(np.amax(labels) + 1) # assume continous class numbers
