@@ -1,8 +1,8 @@
 #!python
-
 '''
-  Authors: Dalton, Ebele, Dawei, Daniel Lee, Daniel Connelly
-  Class: CS545 - Fall 2019 | Professor Anthony Rhodes
+Runs each model and stores results in output/
+Authors: Daniel Connelly, Dalton Bohning, Ebele Esimai, Dawei Zhang, Daniel Lee
+Class: CS545 - Fall 2019 | Professor Anthony Rhodes
 '''
 import sys
 import getopt
@@ -56,7 +56,7 @@ def main(argv):
   versions = list(set(versions)) #Make distinct
   if versions == []: versions = ['bayes', 'slp', 'mlp'] #Run them all
 
-  if serial: #Just simply run each one
+  if serial or (len(versions) == 1): #Just simply run each one
     if 'bayes' in versions: bayes()
     if 'slp' in versions:   slp()
     if 'mlp' in versions:   mlp()

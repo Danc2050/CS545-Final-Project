@@ -1,5 +1,9 @@
+'''
+Perceptron classifer.
+Authors: Daniel Connelly, Dalton Bohning, Ebele Esimai, Dawei Zhang, Daniel Lee
+Class: CS545 - Fall 2019 | Professor Anthony Rhodes
+'''
 import numpy as np
-from os import path
 import prepare
 
 def add_label(data,number_of_inputs):
@@ -11,15 +15,6 @@ def add_label(data,number_of_inputs):
 	label = np.zeros(number_of_inputs,dtype=float)
 	label = data[:,0]
 	return label;
-
-def preprocess(data):
-	"""
-	Makes first column bias of 1
-	data: data set
-	"""
-	array_data = np.array(data,dtype=float)
-	array_data[:,0] = 1
-	return array_data;
 
 def create_weights_slp(rows):
 	"""
@@ -114,21 +109,7 @@ def train(maxTrainRows=25000, maxTestRows=5000):
 	#initial data
 	attributes = 24 #labels are included
 	learning_rate = 0.1
-	#importing from csv
-	data = np.genfromtxt(path.join('data', 'data.csv'), delimiter=',')
-	idx_label = np.shape(data)[1] - 1 # last column
-	(data_train, data_test, labels_train, labels_test, n_class) = prepare.prepare_data(data, idx_label)
-	#train = np.genfromtxt(path.join('SLP','credit_card_train.csv'), delimiter=',',max_rows=maxTrainRows)
-	#test = np.genfromtxt(path.join('SLP','credit_card_test.csv'), delimiter=',',max_rows=maxTestRows)
-
-	#separating labels
-	#label_train = add_label(train,(train.shape[0]))
-	#label_test = add_label(test,(test.shape[0]))
-
-	#preprocess data
-	#pre processed with prepared
-	#train = preprocess(train)
-	#test = preprocess(test)
+	(data, data_train, data_test, labels_train, labels_test, n_class) = prepare.getPreparedData(normalize=False)
 
 	#create weight matrix
 
@@ -147,17 +128,4 @@ def train(maxTrainRows=25000, maxTestRows=5000):
 	print(*train_accuracy, sep=",")
 	print("Test accuracy: ", end="")
 	print(*test_accuracy, sep=",")
-
-	"""
-	#export file
-	with open("train_accuracy.txt",'w') as e:
-		e.write(str(train_accuracy))
-		e.write("\n")
-		e.close()
-
-	with open("test_accuracy.txt",'w') as f:
-		f.write(str(test_accuracy))
-		f.write("\n")
-		f.close()
-	"""
 

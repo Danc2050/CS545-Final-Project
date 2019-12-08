@@ -1,7 +1,7 @@
 '''
-Training Naive Bayes Classifier for our final project CS545 taught by Anthony Rhodes
-Daniel Connelly, Dalton Boehnig, Ebele Esimai, Dawei Zhang, Daniel Lee
-Fall 2019
+Training Naive Bayes Classifier.
+Authors: Daniel Connelly, Dalton Bohning, Ebele Esimai, Dawei Zhang, Daniel Lee
+Class: CS545 - Fall 2019 | Professor Anthony Rhodes
 '''
 import numpy as np
 from sklearn.metrics import confusion_matrix
@@ -69,10 +69,7 @@ def main():
     optional = True
 
     import prepare
-    from os import path
-    data = np.genfromtxt(path.join('data', 'data.csv'), delimiter=',')
-    idx_label = np.shape(data)[1] - 1 # last column
-    (data_train, data_test, labels_train, labels_test, n_class) = prepare.prepare_data(data, idx_label)
+    (data, data_train, data_test, labels_train, labels_test, n_class) = prepare.getPreparedData()
     examples = data
     bad = []
     good = []

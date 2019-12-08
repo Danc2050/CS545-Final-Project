@@ -1,21 +1,17 @@
 '''
 Our neural net implementation on the credit-card data.
 Details: 1 Hidden layer (due to UAT), Dimensionality reduction.
-Authors: Dalton, Ebele, Dawei, Daniel Lee, Daniel Connelly
+Authors: Daniel Connelly, Dalton Bohning, Ebele Esimai, Dawei Zhang, Daniel Lee
 Class: CS545 - Fall 2019 | Professor Anthony Rhodes
 '''
 import numpy as np
-from os import path
-from prepare import prepare_data
+import prepare
 from MLP import mlp_test as mt
 
 
 
 def main():
-  # read in data
-  data = np.genfromtxt(path.join('data', 'data.csv'), delimiter=',')
-  idx_label = np.shape(data)[1] - 1 # last column
-  (data_train, data_test, labels_train, labels_test, n_class) = prepare_data(data, idx_label)
+  (data, data_train, data_test, labels_train, labels_test, n_class) = prepare.getPreparedData()
   data_train = (data_train, labels_train)
   data_test = (data_test, labels_test)
 
