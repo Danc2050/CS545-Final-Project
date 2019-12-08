@@ -40,4 +40,4 @@ def getPreparedData(test_size=0.25, normalize=True):
 
   
 if __name__=="__main__":
-  return getPreparedData()
+  (data, data_train, data_test, labels_train, labels_test, n_class) = getPreparedData()
