@@ -53,15 +53,18 @@ def conf_matrix(test, class_choice):
         target_list.append(test[i][24])
 
     # TODO -- is this function giving a wrong result?
+    #print(confusion_matrix(target_list,class_choice)) # similar to program #1
     conf_matrix = confusion_matrix(target_list,class_choice) # similar to program #1
-    tp = conf_matrix[0][0]
-    fp = conf_matrix[0][1]
-    fn = conf_matrix[1][0]
-    tn = conf_matrix[1][1]
+
+    tp = conf_matrix[1][1]
+    fp = conf_matrix[1][0]
+    fn = conf_matrix[0][1]
+    tn = conf_matrix[0][0]
+    conf_matrix = np.array([[tp, fp], [fn, tn]]) # so our TP is actually defaulting
 
     print(conf_matrix)
     print("Tp, fp, fn, tn: ",tp,fp,fn,tn)
-    print("Accuracy: {}\nPrecision: {}\nRecall: {}".format((tp+tn)/7500 * 100, tp / (tp/fp),tp/(tp+fn)))
+    print("Accuracy: {}\nPrecision: {}\nRecall: {}".format((tp+tn)/7500 * 100, tp / (tp+fp),tp/(tp+fn)))
 
 def main():
     # Set to true to read in credit data.
