@@ -1,0 +1,11 @@
+Test(5841 Good and 1659 Bad): (3000, 24)
+Train Good: (4529, 24)
+Train Bad: (4471, 24)
+Prior of the bad credit score: 0.49677777777777776. Prior of the good: 0.5032222222222222.
+asdfasdf
+[[ 544  927]
+ [ 231 1298]]
+Tp, fp, fn, tn:  1298 231 927 544
+Accuracy: 61.4
+Precision: 0.8489208633093526
+Recall: 0.5833707865168539
