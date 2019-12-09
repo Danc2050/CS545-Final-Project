@@ -62,7 +62,7 @@ def conf_matrix(test, class_choice):
 
     print(conf_matrix)
     print("Tp, fp, fn, tn: ",tp,fp,fn,tn)
-    print("Accuracy: {}\nPrecision: {}\nRecall: {}".format((tp+tn)/7500 * 100, tp / (tp/fp),tp/(tp+fn)))
+    print("Accuracy: {}\nPrecision: {}\nRecall: {}".format((tp+tn)/7500 * 100, tp / (tp+fp),tp/(tp+fn)))
 
 def main():
     # Set to true to read in credit data.
